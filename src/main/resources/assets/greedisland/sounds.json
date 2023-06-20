@@ -1,0 +1,13 @@
+{
+  "osu": { "sounds":["greedisland:osu"], "subtitle": "osu" },
+  "champions": { "sounds":[{"name":  "greedisland:champions", "stream": true }] },
+  "cookiechan": { "sounds":["greedisland:cookiechan"], "subtitle": "cookiechan" },
+  "departure": { "sounds":[{"name": "greedisland:departure", "stream": true }] },
+  "embarkadventure": { "sounds":[{"name": "greedisland:embarkadventure", "stream": true}] },
+  "hisoka": { "sounds":[{"name": "greedisland:hisoka", "stream": true }] },
+  "loungemusic": { "sounds":[{"name": "greedisland:loungemusic", "stream": true }] },
+  "openbook": { "sounds":[{"name": "greedisland:openbook", "stream": false}] },
+  "stoneslide": { "sounds": [{"name":  "greedisland:stoneslideone", "stream":  false}, {"name":  "greedisland:stoneslidetwo", "stream":  false}]},
+  "wind": { "sounds":["greedisland:wind"], "subtitle": "wind", "stream": true },
+  "worldofadventures": { "sounds":[{"name": "greedisland:worldofadventures", "stream": true}] }
+}
