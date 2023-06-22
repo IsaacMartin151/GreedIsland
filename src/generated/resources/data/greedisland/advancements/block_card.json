@@ -1,0 +1,24 @@
+{
+  "criteria": {
+    "block_card": {
+      "conditions": {},
+      "trigger": "greedisland:blockcardtrigger"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "text": "blue"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:stone"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "red"
+    }
+  },
+  "sends_telemetry_event": true
+}

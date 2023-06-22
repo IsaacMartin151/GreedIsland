@@ -2,12 +2,19 @@ package com.greedisland.container;
 
 
 import com.greedisland.GreedIsland;
+import com.greedisland.advancements.BlockCardTrigger;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Optional;
+
+import static com.greedisland.advancements.GreedIslandAdvancements.BLOCK_CARD_TRIGGER;
 
 public class BookItemStackHandler extends ItemStackHandler {
     private static final int BOOK_SIZE = 50;
@@ -18,24 +25,34 @@ public class BookItemStackHandler extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        GreedIsland.LOGGER.info("Stack is "+stack.getItem().toString()+" slot is "+slot);
         if (slot < 0 || slot >= BOOK_SIZE) {
             throw new IllegalArgumentException("Invalid slot number: " + slot);
         }
         if (stack.isEmpty() || stacks.contains(stack)) {
-            GreedIsland.LOGGER.info("Stack is empty or already there");
             return false;
         }
 
         Optional<Card> card = Arrays.stream(Card.values()).filter(c -> c.getItem() == stack.getItem()).findFirst();
-        GreedIsland.LOGGER.info("Got Card " + (card.isPresent() ? card.get().getName() : " sike"));
-
         if (card.isPresent() && card.get().getSlot() == slot + 1) {
-            GreedIsland.LOGGER.info("Target item is a collection card and slot "+slot+" is right slot");
             return true;
         }
-        GreedIsland.LOGGER.info("Not one of the valid items");
+
         return false;
+    }
+
+    public void triggerAdvancements(ServerPlayer serverPlayer) {
+        try {
+//            ServerAdvancementManager sam = serverPlayer.getServer().getAdvancements();
+//            Advancement nature = sam.getAdvancement(BlockCardTrigger.ID);
+//            AdvancementProgress progress = serverPlayer.getAdvancements().getOrStartProgress(nature);
+//            for (String s : progress.getRemainingCriteria()) {
+//                serverPlayer.getAdvancements().award(nature, s);
+//            }
+            BLOCK_CARD_TRIGGER.trigger(serverPlayer);
+        }
+        catch (Exception e){
+            GreedIsland.LOGGER.info("Error triggering advancements - "+e);
+        }
     }
 
     public boolean isComplete() {
@@ -57,4 +74,6 @@ public class BookItemStackHandler extends ItemStackHandler {
         GreedIsland.LOGGER.info("Returning true, book is complete");
         return true;
     }
+
+
 }

@@ -47,6 +47,7 @@ public class SyncBookPacket {
                 BookItemStackHandler cap = serverPlayer.getCapability(BOOK_CAPABILITY, serverPlayer.getDirection()).orElseThrow(null);
                 MenuProvider container = new SimpleMenuProvider((w, p, pl) -> new BookMenu(w, p, cap), Component.literal("Book"));
                 NetworkHooks.openScreen(serverPlayer, container);
+                cap.triggerAdvancements(serverPlayer);
             }
         });
         ctx.get().setPacketHandled(true);

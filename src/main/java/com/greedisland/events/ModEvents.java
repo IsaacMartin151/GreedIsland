@@ -1,6 +1,7 @@
 package com.greedisland.events;
 
 import com.greedisland.GreedIsland;
+import com.greedisland.advancements.GreedIslandAdvancementProvider;
 import com.greedisland.container.BookItemStackHandler;
 import com.greedisland.container.GreedIslandProvider;
 import com.greedisland.packets.PacketManager;
@@ -9,6 +10,9 @@ import com.levelhearts.IMoreHealth;
 import com.levelhearts.MoreHealth;
 import com.levelhearts.MoreHealthProvider;
 import com.mojang.logging.LogUtils;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -16,12 +20,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemStackHandler;
+
+import java.util.concurrent.CompletableFuture;
 
 import static com.greedisland.GreedIsland.MODID;
 import static com.greedisland.container.GreedIslandProvider.BOOK_CAPABILITY;
@@ -30,6 +38,16 @@ import static com.greedisland.registry.KeyMappings.BOOK;
 @Mod.EventBusSubscriber
 public class ModEvents
 {
+    @SubscribeEvent
+    public void gatherData(GatherDataEvent event) {
+        GreedIsland.LOGGER.info("Registering advancements");
+        DataGenerator generator = event.getGenerator();
+        PackOutput output = event.getGenerator().getPackOutput();
+        CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
+        ExistingFileHelper helper = event.getExistingFileHelper();
+        generator.addProvider(event.includeServer(), new GreedIslandAdvancementProvider(output, provider, helper));
+    }
+
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
