@@ -1,43 +1,40 @@
 package com.greedisland.container;
 
 
-
 import com.greedisland.GreedIsland;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
-
-import java.util.List;
+import java.util.Arrays;
+import java.util.Optional;
 
 public class BookItemStackHandler extends ItemStackHandler {
-    public List<Item> items;
-
     private static final int BOOK_SIZE = 50;
 
     public BookItemStackHandler() {
         super(BOOK_SIZE);
-        items = Card.getAllCardItems();
     }
 
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+        GreedIsland.LOGGER.info("Stack is "+stack.getItem().toString()+" slot is "+slot);
         if (slot < 0 || slot >= BOOK_SIZE) {
             throw new IllegalArgumentException("Invalid slot number: " + slot);
         }
         if (stack.isEmpty() || stacks.contains(stack)) {
+            GreedIsland.LOGGER.info("Stack is empty or already there");
             return false;
         }
 
-        if (items.contains(stack.getItem())) {
-            GreedIsland.LOGGER.info("Target item is a collection card");
+        Optional<Card> card = Arrays.stream(Card.values()).filter(c -> c.getItem() == stack.getItem()).findFirst();
+        GreedIsland.LOGGER.info("Got Card " + (card.isPresent() ? card.get().getName() : " sike"));
+
+        if (card.isPresent() && card.get().getSlot() == slot + 1) {
+            GreedIsland.LOGGER.info("Target item is a collection card and slot "+slot+" is right slot");
             return true;
         }
-        GreedIsland.LOGGER.info("Not a valid itemstack, not in the hundred or already there");
+        GreedIsland.LOGGER.info("Not one of the valid items");
         return false;
     }
 

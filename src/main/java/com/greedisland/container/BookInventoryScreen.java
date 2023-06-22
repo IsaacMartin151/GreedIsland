@@ -4,7 +4,6 @@ import com.greedisland.GreedIsland;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -12,33 +11,24 @@ import net.minecraft.world.entity.player.Inventory;
 public class BookInventoryScreen extends AbstractContainerScreen<BookMenu> {
     private final ResourceLocation GUI = new ResourceLocation(GreedIsland.MODID, "textures/gui/book/book_inventory.png");
 
-    private final int textureWidth = 194;
-    private final int textureHeight = 294;
-
-    public BookInventoryScreen(BookMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, Component.literal("Book"));
+    public BookInventoryScreen(BookMenu bookMenu, Inventory inv, Component title) {
+        super(bookMenu, inv, title);
+        this.passEvents = false;
+        this.imageHeight = 114 + 6 * 18;
+        this.inventoryLabelY = this.imageHeight - 94;
     }
 
-    @Override
-    protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+    public void render(PoseStack p_98418_, int p_98419_, int p_98420_, float p_98421_) {
+        this.renderBackground(p_98418_);
+        super.render(p_98418_, p_98419_, p_98420_, p_98421_);
+        this.renderTooltip(p_98418_, p_98419_, p_98420_);
+    }
+
+    protected void renderBg(PoseStack p_98413_, float p_98414_, int p_98415_, int p_98416_) {
         RenderSystem.setShaderTexture(0, GUI);
-
-        int pX = (this.width - this.textureWidth) / 2;
-        int pY = (this.height - this.textureHeight) / 2;
-
-        blit(pPoseStack, pX, pY, 0, 0, textureWidth, textureHeight, textureWidth, textureHeight);
-    }
-
-    @Override
-    protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        int pXinventory = 10;
-        int pYinventory = 200;
-        int pXbook = 0;
-        int pYbook = 0;
-
-        drawString(pPoseStack, font, title, pXbook, pYbook, 0xFFFFFF);
-        drawString(pPoseStack, font, "Inventory", pXinventory, pYinventory, 0xFFFFFF);
+        int i = (this.width - this.imageWidth) / 2;
+        int j = (this.height - this.imageHeight) / 2;
+        blit(p_98413_, i, j, 0, 0, this.imageWidth, 6 * 18 + 17);
+        blit(p_98413_, i, j + 6 * 18 + 17, 0, 126, this.imageWidth, 96);
     }
 }
