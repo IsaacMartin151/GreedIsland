@@ -2,24 +2,24 @@
   "criteria": {
     "block_card": {
       "conditions": {},
-      "trigger": "greedisland:blockcardtrigger"
+      "trigger": "greedisland:firsttrigger"
     }
   },
   "display": {
     "announce_to_chat": true,
+    "background": "greedisland:title.png",
     "description": {
-      "text": "blue"
+      "text": "Collect your First Card"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:stone"
+      "item": "minecraft:book"
     },
     "show_toast": true,
     "title": {
-      "text": "red"
+      "text": "Departure V1"
     }
   },
-  "parent": "greedisland:first",
   "sends_telemetry_event": true
 }

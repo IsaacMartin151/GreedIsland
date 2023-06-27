@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 import static com.greedisland.registry.MenuTypes.BOOK_MENU;
 
 public class BookMenu extends AbstractContainerMenu {
-    private final BookItemStackHandler bookItemStackHandler;
+    public final BookItemStackHandler bookItemStackHandler;
 
     private static final int BAG_SIZE = 50;
 

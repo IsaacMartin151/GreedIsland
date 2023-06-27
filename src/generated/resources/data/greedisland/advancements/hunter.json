@@ -2,22 +2,22 @@
   "criteria": {
     "block_card": {
       "conditions": {},
-      "trigger": "greedisland:blockcardtrigger"
+      "trigger": "greedisland:huntertrigger"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "text": "blue"
+      "text": "Collect all Hunter Cards"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:stone"
+      "item": "minecraft:bow"
     },
     "show_toast": true,
     "title": {
-      "text": "red"
+      "text": "Hunter X Hunter"
     }
   },
   "parent": "greedisland:first",

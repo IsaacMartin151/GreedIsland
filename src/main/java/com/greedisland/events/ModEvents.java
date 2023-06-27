@@ -2,7 +2,9 @@ package com.greedisland.events;
 
 import com.greedisland.GreedIsland;
 import com.greedisland.advancements.GreedIslandAdvancementProvider;
+import com.greedisland.container.BookInventoryScreen;
 import com.greedisland.container.BookItemStackHandler;
+import com.greedisland.container.BookMenu;
 import com.greedisland.container.GreedIslandProvider;
 import com.greedisland.packets.PacketManager;
 import com.greedisland.packets.SyncBookPacket;
@@ -10,19 +12,23 @@ import com.levelhearts.IMoreHealth;
 import com.levelhearts.MoreHealth;
 import com.levelhearts.MoreHealthProvider;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -90,11 +96,12 @@ public class ModEvents
         }
     }
 
-//    @SubscribeEvent
-//    public static void onMainMenu(ScreenEvent.Init event) {
-//        if (event.getScreen() instanceof TitleScreen) {
-//            //event.getScreen().getMinecraft().setScreen(new MainMenu());
-//        }
-//    }
+    @SubscribeEvent
+    public static void onMainMenu(PlayerContainerEvent.Close event) {
+        if (event.getContainer() instanceof BookMenu) {
+            BookMenu menu = (BookMenu) event.getContainer();
+            menu.bookItemStackHandler.triggerAdvancements((ServerPlayer) event.getEntity());
+        }
+    }
 
 }
