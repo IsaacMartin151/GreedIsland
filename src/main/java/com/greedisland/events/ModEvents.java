@@ -2,16 +2,14 @@ package com.greedisland.events;
 
 import com.greedisland.GreedIsland;
 import com.greedisland.advancements.GreedIslandAdvancementProvider;
-import com.greedisland.container.BookInventoryScreen;
-import com.greedisland.container.BookItemStackHandler;
-import com.greedisland.container.BookMenu;
-import com.greedisland.container.GreedIslandProvider;
+import com.greedisland.container.*;
 import com.greedisland.packets.PacketManager;
 import com.greedisland.packets.SyncBookPacket;
 import com.levelhearts.IMoreHealth;
 import com.levelhearts.MoreHealth;
 import com.levelhearts.MoreHealthProvider;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -101,6 +99,13 @@ public class ModEvents
         if (event.getContainer() instanceof BookMenu) {
             BookMenu menu = (BookMenu) event.getContainer();
             menu.bookItemStackHandler.triggerAdvancements((ServerPlayer) event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onDeathScreen(ScreenEvent.Opening event) {
+        if (event.getNewScreen() instanceof DeathScreen) {
+            event.setNewScreen(new DeathMenu());
         }
     }
 
