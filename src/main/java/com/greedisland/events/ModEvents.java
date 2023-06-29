@@ -5,11 +5,15 @@ import com.greedisland.advancements.GreedIslandAdvancementProvider;
 import com.greedisland.container.*;
 import com.greedisland.packets.PacketManager;
 import com.greedisland.packets.SyncBookPacket;
+import com.greedisland.screens.DeathMenu;
+import com.greedisland.screens.MainMenu;
 import com.levelhearts.IMoreHealth;
 import com.levelhearts.MoreHealth;
 import com.levelhearts.MoreHealthProvider;
 import com.mojang.logging.LogUtils;
+import com.mojang.realmsclient.gui.screens.RealmsPlayerScreen;
 import net.minecraft.client.gui.screens.DeathScreen;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -20,7 +24,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -104,6 +107,10 @@ public class ModEvents
 
     @SubscribeEvent
     public static void onDeathScreen(ScreenEvent.Opening event) {
+        if (event.getNewScreen() instanceof TitleScreen) {
+            event.setNewScreen(new MainMenu());
+        }
+
         if (event.getNewScreen() instanceof DeathScreen) {
             event.setNewScreen(new DeathMenu());
         }

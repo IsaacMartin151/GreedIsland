@@ -1,10 +1,9 @@
 package com.greedisland;
 
-import com.greedisland.advancements.*;
-import com.greedisland.container.BookInventoryScreen;
+import com.greedisland.advancements.GreedIslandAdvancements;
+import com.greedisland.screens.BookInventoryScreen;
 import com.greedisland.packets.PacketManager;
 import com.mojang.logging.LogUtils;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
