@@ -9,8 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.GenericDirtMessageScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,14 +40,17 @@ public class DeathMenu extends Screen {
     @Override
     protected void init() {
         ticks = 0;
-        this.buttons.add(this.addRenderableWidget(Button.builder(Component.literal("Respawn"), (p_275862_) -> {
+        this.buttons.add(this.addRenderableWidget(Button.builder(Component.translatable("deathScreen.respawn"), (p_275862_) -> {
             this.minecraft.player.respawn();
             p_275862_.active = false;
-        }).bounds(this.width / 2 - 100, this.height / 4 + 72, 200, 20).build()));
+            this.minecraft.forceSetScreen(null);
+        }).bounds(this.width / 2 - 100, this.height / 4 + 102, 200, 20).build()));
         this.buttons.add(this.addRenderableWidget(Button.builder(Component.literal("Title Screen"), (p_262871_) -> {
             this.minecraft.getReportingContext().draftReportHandled(this.minecraft, this, this::exitToTitleScreen, true);
-        }).bounds(this.width / 2 - 100, this.height / 4 + 96, 200, 20).build()));
+        }).bounds(this.width / 2 - 100, this.height / 4 + 126, 200, 20).build()));
+        setButtonsActive(false);
         Minecraft.getInstance().getSoundManager().stop();
+        Minecraft.getInstance().getSoundManager().play(hisoka);
     }
 
     private void exitToTitleScreen() {
@@ -79,9 +80,6 @@ public class DeathMenu extends Screen {
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        if (!Minecraft.getInstance().getSoundManager().isActive(hisoka)) {
-            Minecraft.getInstance().getSoundManager().play(hisoka);
-        }
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);

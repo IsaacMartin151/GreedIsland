@@ -9,7 +9,6 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class MoreHealthProvider implements ICapabilitySerializable<CompoundTag> {
-
     public static final Capability<IMoreHealth> MORE_HEALTH_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() { });
     private LazyOptional<IMoreHealth> instance = LazyOptional.of(MoreHealth::new);
 
@@ -20,13 +19,13 @@ public class MoreHealthProvider implements ICapabilitySerializable<CompoundTag> 
 
     @Override
     public CompoundTag serializeNBT() {
-        IMoreHealth nenUser = instance.orElseThrow(() -> new IllegalArgumentException("Serialize MoreHealth is empty!"));
+        IMoreHealth nenUser = instance.orElseThrow(() -> new IllegalArgumentException("Couldn't serialize health"));
         return nenUser.serializeNBT();
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        IMoreHealth nenUser = instance.orElseThrow(() -> new IllegalArgumentException("Deserialize MoreHealth is empty!"));
+        IMoreHealth nenUser = instance.orElseThrow(() -> new IllegalArgumentException("Couldn't deserialize health"));
         nenUser.deserializeNBT(nbt);
     }
 

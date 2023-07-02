@@ -1,5 +1,6 @@
 {
   "itemGroup.greedisland": "Greed Island",
   "key.category.greedisland.greedisland": "Greed Island",
-  "key.greedisland.book": "Book"
+  "key.greedisland.book": "Book",
+  "key.greedisland.debug": "Debug"
 }

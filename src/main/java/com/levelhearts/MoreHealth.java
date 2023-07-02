@@ -15,61 +15,15 @@ import static com.levelhearts.MoreHealthProvider.MORE_HEALTH_CAPABILITY;
 
 
 public class MoreHealth implements IMoreHealth {
-    private byte version;
-    private float modifier;
-    private short rampPosition;
     private byte heartContainers;
 
     public MoreHealth() {
-        this.version = (byte) 1;
-        this.modifier = getDefaultModifier();
-        this.rampPosition = 0;
-        this.heartContainers = 3;
-    }
-
-    @Override
-    public float getTrueModifier() {
-        return modifier + (heartContainers * 2);
-    }
-
-    @Override
-    public float getEnhancerModifier() {
-        return modifier + (heartContainers * 3);
-    }
-
-    @Override
-    public byte getVersion() {
-        return version;
-    }
-
-    @Override
-    public float getModifier() {
-        return modifier;
-    }
-
-    @Override
-    public short getRampPosition() {
-        return rampPosition;
+        this.heartContainers = 6;
     }
 
     @Override
     public byte getHeartContainers() {
-        return getHeartContainers();
-    }
-
-    @Override
-    public void setVersion(byte version) {
-        this.version = version;
-    }
-
-    @Override
-    public void setModifier(float modifier) {
-        this.modifier = modifier;
-    }
-
-    @Override
-    public void setRampPosition(short rampPosition) {
-        this.rampPosition = rampPosition;
+        return heartContainers;
     }
 
     @Override
@@ -78,20 +32,12 @@ public class MoreHealth implements IMoreHealth {
     }
 
     @Override
-    public void addRampPosition() {
-        this.rampPosition += (short) 1;
-    }
-
-    @Override
     public void addHeartContainer() {
-        this.heartContainers += (byte) 1;
+        this.heartContainers += (byte) 2;
     }
 
     @Override
     public void copy(IMoreHealth other) {
-        this.version = other.getVersion();
-        this.modifier = other.getModifier();
-        this.rampPosition = other.getRampPosition();
         this.heartContainers = other.getHeartContainers();
     }
 
@@ -104,10 +50,6 @@ public class MoreHealth implements IMoreHealth {
         }
     }
 
-    public static float getDefaultModifier() {
-        return 1.0F;
-    }
-
     public static IMoreHealth getFromPlayer(Player player) {
         return player.getCapability(MORE_HEALTH_CAPABILITY, null).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
     }
@@ -118,24 +60,18 @@ public class MoreHealth implements IMoreHealth {
 
     @Override
     public String toString() {
-        return String.format("MoreHealth {version=%s,modifier=%s,rampPosition=%s, containers=%s}", version, modifier, rampPosition, heartContainers);
+        return String.format("MoreHealth {containers=%s}", heartContainers);
     }
 
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        tag.putByte("version", version);
-        tag.putFloat("modifier", modifier);
-        tag.putShort("ramp", rampPosition);
         tag.putByte("heartContainers", heartContainers);
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        this.version = nbt.getByte("version");
-        this.modifier = nbt.getFloat("modifier");
-        this.rampPosition = nbt.getShort("ramp");
         this.heartContainers = nbt.getByte("heartContainers");
 
     }

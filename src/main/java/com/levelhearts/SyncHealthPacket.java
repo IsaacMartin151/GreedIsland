@@ -32,11 +32,8 @@ public class SyncHealthPacket {
 
     public static void handle(SyncHealthPacket msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            // Fetch Capability
             LocalPlayer player = (LocalPlayer) Minecraft.getInstance().level.getEntity(msg.nbt.getInt("entityid"));
             IMoreHealth cap = MoreHealth.getFromPlayer(player);
-
-            // Read NBT Data into Capability
             cap.deserializeNBT(msg.nbt);
         });
         ctx.get().setPacketHandled(true);

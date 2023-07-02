@@ -28,6 +28,7 @@ public class MainMenu extends Screen {
     private final ResourceLocation TITLE = new ResourceLocation(GreedIsland.MODID, "textures/gui/title/title.png");
     private ResourceLocation background = new ScreenBackgrounds().getRandom();
     private final List<Button> buttons = Lists.newArrayList();
+    private boolean playedAlready = false;
 
     public MainMenu() {
         super(Component.literal("Hunter X Hunter Main Menu"));
@@ -71,8 +72,9 @@ public class MainMenu extends Screen {
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        if (!Minecraft.getInstance().getSoundManager().isActive(departure)) {
+        if (!Minecraft.getInstance().getSoundManager().isActive(departure) && !playedAlready) {
             Minecraft.getInstance().getSoundManager().play(departure);
+            playedAlready = true;
         }
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, background);
@@ -84,7 +86,7 @@ public class MainMenu extends Screen {
         RenderSystem.setShaderTexture(0, TITLE);
         // X pos on screen, y pos on screen, wi, x repetitions, y repititions
         int width = this.width/4;
-        int height = width * 108/384;
+        int height = width * 216/384;
         blit(matrixStack, this.width - width, this.height - height, Util.getMillis() / 20, 0, width, height, width, height);
         for (Button button : this.buttons) {
             button.render(matrixStack, mouseX, mouseY, partialTicks);
