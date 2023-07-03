@@ -1,9 +1,12 @@
 package com.levelhearts;
 
+import com.greedisland.GreedIsland;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -32,8 +35,9 @@ public class SyncHealthPacket {
 
     public static void handle(SyncHealthPacket msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            LocalPlayer player = (LocalPlayer) Minecraft.getInstance().level.getEntity(msg.nbt.getInt("entityid"));
+            Player player = (Player) Minecraft.getInstance().level.getEntity(msg.nbt.getInt("entityid"));
             IMoreHealth cap = MoreHealth.getFromPlayer(player);
+            GreedIsland.LOGGER.info("Syncing Health Packet: Health - "+cap.getHeartContainers());
             cap.deserializeNBT(msg.nbt);
         });
         ctx.get().setPacketHandled(true);

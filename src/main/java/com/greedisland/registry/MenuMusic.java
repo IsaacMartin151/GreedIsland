@@ -38,7 +38,7 @@ public class MenuMusic implements SoundInstance {
 
     @Override
     public boolean isLooping() {
-        return true;
+        return false;
     }
 
     @Override

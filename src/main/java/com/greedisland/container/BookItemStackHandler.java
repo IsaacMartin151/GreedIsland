@@ -114,18 +114,18 @@ public class BookItemStackHandler extends ItemStackHandler {
         }
     }
 
-    public boolean isComplete() {
-        int emptySlots = 0;
+    public int getSlotsFilled() {
+        int filledSlots = 0;
         for (int i = 0; i < this.getSlots(); i++) {
-            if (getStackInSlot(i).isEmpty()) {
-                emptySlots++;
+            if (!getStackInSlot(i).isEmpty()) {
+                filledSlots++;
             }
         }
-        if (emptySlots == 0) {
-            GreedIsland.LOGGER.info("Book is complete");
-            return true;
-        }
-        return true;
+        return filledSlots;
+    }
+
+    public boolean isComplete() {
+        return getSlotsFilled() != this.getSlots();
     }
 
 

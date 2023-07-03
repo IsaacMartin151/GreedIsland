@@ -94,8 +94,8 @@ public class ModEvents
         }
 
         Player player = event.getEntity();
-        // Trying to start the player with 3 hearts. 20 - 14 = 6
-        AttributeModifier modifier = new AttributeModifier(UUID.fromString("81f27f52-c8bb-403a-a1a4-b356d2f7a0f0"), "levelHearts.healthModifier", -14, AttributeModifier.Operation.ADDITION);
+        IMoreHealth cap = MoreHealth.getFromPlayer(player);
+        AttributeModifier modifier = new AttributeModifier(UUID.fromString("81f27f52-c8bb-403a-a1a4-b356d2f7a0f0"), "levelHearts.healthModifier", cap.getHeartContainers() - 20, AttributeModifier.Operation.ADDITION);
         AttributeInstance attribute = player.getAttribute(Attributes.MAX_HEALTH);
         attribute.removeModifier(modifier);
         attribute.addPermanentModifier(modifier);
@@ -112,22 +112,21 @@ public class ModEvents
         Player player = event.getEntity();
         IMoreHealth cap = MoreHealth.getFromPlayer(player);
 
-
         if (event.isEndConquered()) {
             MoreHealth.updateClient((ServerPlayer) player, cap);
             return;
         }
-
 
         AttributeModifier modifier = new AttributeModifier(UUID.fromString("81f27f52-c8bb-403a-a1a4-b356d2f7a0f0"), "levelHearts.healthModifier", cap.getHeartContainers() - 20, AttributeModifier.Operation.ADDITION);
         AttributeInstance attribute = player.getAttribute(Attributes.MAX_HEALTH);
         attribute.removeModifier(modifier);
         attribute.addPermanentModifier(modifier);
         player.setHealth(player.getMaxHealth());
+        MoreHealth.updateClient((ServerPlayer) player, cap);
     }
 
 
-        @SubscribeEvent
+    @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
         // Fetch & Copy Capability
         Player playerOld = event.getOriginal();
@@ -139,6 +138,7 @@ public class ModEvents
         ItemStackHandler bookNew = playerNew.getCapability(BOOK_CAPABILITY, null).orElseThrow(() -> new IllegalArgumentException("Book can not be null"));
         bookNew.deserializeNBT(bookOld.serializeNBT());
         capNew.copy(capOld);
+        playerOld.invalidateCaps();
     }
 
     @SubscribeEvent
